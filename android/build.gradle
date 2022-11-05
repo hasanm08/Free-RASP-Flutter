@@ -1,0 +1,67 @@
+group 'com.aheaditec.freerasp'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://nexus3-public.monetplus.cz/repository/ahead-talsec-free-rasp" }
+        maven { url "https://developer.huawei.com/repo/" }
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+
+    buildTypes {
+        profile{
+            // Empty but necessary for `profileImplementation`
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Talsec Release
+    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-release'
+
+    // Talsec Debug
+    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+
+    // Talsec Profile
+    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+}
